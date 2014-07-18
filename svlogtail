@@ -1,0 +1,23 @@
+#!/bin/sh
+# svlogtail [LOGS...] - show svlogd logs conveniently
+#
+# Without arguments, show current logs of all services, uniquely.
+# With arguments, show all logs of mentioned services.
+
+if [ $# = 0 ]; then
+	cat /var/log/socklog/*/current | sort -u
+	tail -Fq -n0 /var/log/socklog/*/current | uniq
+else
+	old=
+	cur=
+	for log; do
+		if [ -d /var/log/socklog/$log ]; then
+			old="$old /var/log/socklog/$log/*.[us]"
+			cur="$cur /var/log/socklog/$log/current"
+		else
+			echo "no logs for $log" 1>&2
+		fi
+	done
+	cat $old $cur | sort
+	tail -Fq -n0 $cur
+fi
