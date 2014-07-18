@@ -1,0 +1,6 @@
+-*
+# uncomment to output logs to tty12
+# (also change /etc/sv/socklog-unix/log/run)
+#e*
+#Eauth.*
+#Eauthpriv.*
