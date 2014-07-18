@@ -1,0 +1,9 @@
+-*
++*.info:*
++*.notice:*
++*.warn:*
+-auth.*
+-authpriv.*
+-mail.*
+-news.*
+-cron.*

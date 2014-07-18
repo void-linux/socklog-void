@@ -1,0 +1,6 @@
+-*
++*.err:*
++*.error:*
++*.emerg:*
++*.alert:*
++*.crit:*

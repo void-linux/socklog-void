@@ -1,0 +1,2 @@
+#!/bin/sh
+exec chpst -U nobody:nogroup socklog unix /dev/log 2>&1
