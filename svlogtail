@@ -16,6 +16,7 @@ else
 			cur="$cur /var/log/socklog/$log/current"
 		else
 			echo "no logs for $log" 1>&2
+                        exit 1
 		fi
 	done
 	cat $old $cur | sort

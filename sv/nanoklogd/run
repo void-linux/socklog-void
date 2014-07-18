@@ -1,2 +1,2 @@
 #!/bin/sh
-exec nanoklogd
+exec chpst -u nobody:nogroup nanoklogd
