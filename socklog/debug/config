@@ -1,2 +1,3 @@
+!syslog-stripdate
 -*
 +*.debug:*
