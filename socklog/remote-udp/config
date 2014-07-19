@@ -1,0 +1,3 @@
+-*
+# uncomment to forward to a remote syslog host.  IPv4 only, sorry.
+#U192.0.2.42:514
