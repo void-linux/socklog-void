@@ -23,7 +23,7 @@ static const struct {
 int
 main(int argc, char *argv[]) {
 	char buf[16384];
-	int f, l;
+	int f, l, start, stop;
 
 	f = socket(AF_UNIX, SOCK_DGRAM|SOCK_CLOEXEC, 0);
 	if (f < 0)
@@ -37,22 +37,28 @@ main(int argc, char *argv[]) {
 		if (l < 0)
 			return 113;
 
-		while (send(f, buf, l, 0) != l)
-			switch (errno) {
-			case ECONNREFUSED:
-			case ECONNRESET:
-			case ENOTCONN:
-				/* syslogd went down, retry until up.  */
-				close(f);
-				sleep(1);
-				f = socket(AF_UNIX, SOCK_DGRAM|SOCK_CLOEXEC, 0);
-				if (f < 0)
-					return 111;
-				connect(f, (void *)&log_addr, sizeof log_addr);
-				break;
-			default:
-				return 114;
+		for (start = 0; start < l; start = stop+1) {
+			for (stop = start+1; stop < l && buf[stop] != '\n'; stop++)
+				;
+
+			while (send(f, buf+start, stop-start, 0) != stop-start) {
+				switch (errno) {
+				case ECONNREFUSED:
+				case ECONNRESET:
+				case ENOTCONN:
+					/* syslogd went down, retry until up.  */
+					close(f);
+					sleep(1);
+					f = socket(AF_UNIX, SOCK_DGRAM|SOCK_CLOEXEC, 0);
+					if (f < 0)
+						return 111;
+					connect(f, (void *)&log_addr, sizeof log_addr);
+					break;
+				default:
+					return 114;
+				}
 			}
+		}
 	}
 	return 0;
 }
