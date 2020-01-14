@@ -1,8 +1,13 @@
 #!/bin/sh
-# svlogtail [LOGS...] - show svlogd logs conveniently
-#
-# Without arguments, show current logs of all services, uniquely.
-# With arguments, show all logs of mentioned services.
+
+usage () {
+	cat <<-'EOF'
+	svlogtail [LOG...] - show svlogd logs conveniently
+
+	Without arguments, show current logs of all services, uniquely.
+	With arguments, show all logs of mentioned services
+	EOF
+}
 
 if [ $# = 0 ]; then
 	cat /var/log/socklog/*/current | sort -u
@@ -11,6 +16,9 @@ else
 	old=
 	cur=
 	for log; do
+		case "$log" in
+			-*) usage; exit 1;;
+		esac
 		if [ -d /var/log/socklog/$log ]; then
 			old="$old /var/log/socklog/$log/*.[us]"
 			cur="$cur /var/log/socklog/$log/current"
