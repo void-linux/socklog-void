@@ -1,6 +1,6 @@
 /* nanoklogd - forward kernel messages to /dev/log.  */
 
-/* Written by Christian Neukirchen <chneukirchen@gmail.com>
+/* Written by Leah Neukirchen <leah@vuxu.org>
    To the extent possible under law, the creator of this work has waived
    all copyright and related or neighboring rights to this work.  */
 
