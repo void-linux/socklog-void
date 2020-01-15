@@ -23,8 +23,7 @@ static const struct {
 int
 main(int argc, char *argv[]) {
 	char buf[16384];
-	int f, l, start;
-	int stop = 0;
+	int f, l, start, stop;
 
 	f = socket(AF_UNIX, SOCK_DGRAM|SOCK_CLOEXEC, 0);
 	if (f < 0)
