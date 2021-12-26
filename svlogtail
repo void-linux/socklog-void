@@ -9,6 +9,13 @@ usage () {
 	EOF
 }
 
+globexist() {
+	[ -f "$1" ]
+}
+
+IFS='
+'
+
 if [ $# = 0 ]; then
 	cat /var/log/socklog/*/current | sort -u
 	tail -Fq -n0 /var/log/socklog/*/current | uniq
@@ -20,8 +27,10 @@ else
 			-*) usage; exit 1;;
 		esac
 		if [ -d /var/log/socklog/$log ]; then
-			old="$old /var/log/socklog/$log/*.[us]"
-			cur="$cur /var/log/socklog/$log/current"
+			if globexist /var/log/socklog/$log/*.[us]; then
+				old="$old$IFS/var/log/socklog/$log/*.[us]"
+			fi
+			cur="$cur$IFS/var/log/socklog/$log/current"
 		else
 			echo "no logs for $log" 1>&2
                         exit 1
